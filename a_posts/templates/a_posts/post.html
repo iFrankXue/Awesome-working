@@ -1,0 +1,47 @@
+<article class="card">
+    <div class="flex items-center justify-between px-4 h-14">
+        <h3 class="text-lg font-bold w-[50%] truncate">{{ post.title }}</h3>
+        <div class="text-sm text-gray-500">
+            Flickr <a href="{{ post.url }}" class="hover:underline" target="_blank">@{{ post.artist }}</a>
+        </div>
+    </div>
+    <figure>
+        <a href="{% url 'post-page' post.id %}"><img class="w-full" src="{{ post.image }}"
+                alt=""></a>
+    </figure>
+
+    <div class="p-4 pb-2">
+        <a class="flex items-center gap-1 mb-4" href="">
+            <img class="w-8 h-8 rounded-full" src="https://img.icons8.com/ios/100/A9A9A9/happy--v1.png"
+                alt="happy--v1" />
+            <span class="font-bold hover:underline">Lisa</span>
+        </a>
+        <p class="text-5xl mb-10 px-4 font1">{{ post.body }}</p>
+
+        <div class="flex items-center gap-2 text-sm mb-5">
+
+            {% for tag in post.tags.all %}
+            <a class="bg-gray-200 rounded-full px-3 py-1 hover:bg-gray-500 hover:text-white"
+                href="{% url 'category-view' tag.slug %}">{{ tag.name }}</a>
+            {% empty %}
+            <a class="bg-gray-200 rounded-full px-3 py-1 hover:bg-gray-500 hover:text-white"
+            href="">Uncategorized</a>
+            {% endfor %}
+
+        </div>
+
+        <div class="flex items-center justify-between text-sm px-2">
+            <a class="font-bold hover:underline" href="{% url 'post-page' post.id %}">Comments<span
+                    class="font-light text-gray-500 ml-2">3</span></a>
+            <div class="flex items-center gap-4 [&>a:hover]:underline">
+                <div class="flex items-center gap-1">
+                    <img class="w-5 -mt-1" src="https://img.icons8.com/small/24/000000/fire-heart.png"
+                        alt="">1
+                </div>
+                <a href="">Like</a>
+                <a href="{% url 'post-edit' post.id %}">Edit</a>
+                <a href="{% url 'post-delete' post.id %}">Delete</a>
+            </div>
+        </div>
+    </div>
+</article>

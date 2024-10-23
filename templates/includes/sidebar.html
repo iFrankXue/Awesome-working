@@ -1,0 +1,69 @@
+{% load static %}
+
+<aside x-show="mobileSidebarOpen" x-cloak
+class="md:!block col-span-full md:col-span-1 mx-[5%] md:mr-[20%] order-1 md:order-2"
+x-transition:enter="duration-300 ease-out" x-transition:enter-start="opacity-0 -mt-96"
+x-transition:enter-end="opacity-100 mt-0" x-transition:leave="duration-300 ease-in"
+x-transition:leave-start="opacity-100 mt-0" x-transition:leave-end="opacity-0 -mt-96">
+<section class="card p-4">
+    <h2>Categories</h2>
+    <ul class="hoverlist">
+        {% for category in categories %}
+        <li {% if category.slug == tag.slug %}class="highlight"{% endif %}><a href="{% url 'category-view' category.slug %}">
+                <img class="w-8 h-8 object-cover mr-2"
+                    src="{{ category.image.url }}" alt="{{ category.name }} icon" />
+                <span class="font-bold text-sm">{{ category.name }}</span>
+            </a></li>
+        {% endfor %}
+        
+    </ul>
+</section>
+
+<section class="card p-4">
+    <div class="flex items-center">
+        <img class="w-6 mr-2 -mt-3" src="{% static 'images/fireheart_black.svg' %}" alt="Top Posts">
+        <h2 class="">Top Posts</h2>
+    </div>
+    <ul class="hoverlist">
+        <li><a href="">
+                <img class="w-10 h-10 rounded-lg object-cover mr-3"
+                    src="https://live.staticflickr.com/6064/6095504934_8e0591b235_k.jpg" alt="" />
+                <img class="w-6 h-6 rounded-full object-cover mr-0.5"
+                    src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="" />
+                <span class="font-bold text-sm mr-1">Homer</span>
+                <span class="text-sm font-light text-gray-500">(5 Likes)</span>
+            </a></li>
+        <li><a href="">
+                <img class="w-10 h-10 rounded-lg object-cover mr-3"
+                    src="https://live.staticflickr.com/6064/6095504934_8e0591b235_k.jpg" alt="" />
+                <img class="w-6 h-6 rounded-full object-cover mr-0.5"
+                    src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="" />
+                <span class="font-bold text-sm mr-1">Homer</span>
+                <span class="text-sm font-light text-gray-500">(5 Likes)</span>
+            </a></li>
+
+    </ul>
+</section>
+
+<section class="card p-4">
+    <div class="flex items-center">
+        <img class="w-6 mr-2 -mt-3" src="{% static 'images/fireheart_black.svg' %}" alt="Top Comments">
+        <h2 class="">Top Comments</h2>
+    </div>
+    <ul class="hoverlist">
+        <li><a href="">
+                <img class="w-8 h-8 rounded-full object-cover mr-1"
+                    src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="" />
+                <span class="font-bold text-sm mr-1">Homer</span>
+                <span class="text-sm font-light text-gray-500">(5 Likes)</span>
+            </a></li>
+        <li><a href="">
+                <img class="w-8 h-8 rounded-full object-cover mr-1"
+                    src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="" />
+                <span class="font-bold text-sm mr-1">Homer</span>
+                <span class="text-sm font-light text-gray-500">(5 Likes)</span>
+            </a></li>
+
+    </ul>
+</section>
+</aside>
