@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     
     # Created applications
     'a_posts',
+    'a_users',
+    
+    'django_cleanup.apps.CleanupConfig',
     
 ]
 

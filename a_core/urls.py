@@ -21,7 +21,7 @@ from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
 
-from a_posts.views import *
+# from a_posts.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +32,10 @@ urlpatterns += [
     path('', RedirectView.as_view(url='posts/', permanent=True)),
     path('posts/', include('a_posts.urls')),
 ]   
+
+urlpatterns += [
+    path('profile/', include('a_users.urls')),
+]
 
 # Only for development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
