@@ -1,3 +1,5 @@
+{% load static %}
+
 <article class="card">
     <div class="flex items-center justify-between px-4 h-14">
         <h3 class="text-lg font-bold w-[50%] truncate">{{ post.title }}</h3>
@@ -11,11 +13,20 @@
     </figure>
 
     <div class="p-4 pb-2">
-        <a class="flex items-center gap-1 mb-4" href="">
-            <img class="w-8 h-8 rounded-full" src="https://img.icons8.com/ios/100/A9A9A9/happy--v1.png"
+        {% if post.author %}
+        <a class="flex items-center gap-1 mb-4" href="{% url 'user-profile' post.author.username %}">
+            <img class="w-8 h-8 rounded-full" src="{{ post.author.profile.avatar }}"
                 alt="happy--v1" />
-            <span class="font-bold hover:underline">Lisa</span>
+            <span class="font-bold hover:underline">{{ post.author.profile.name }}</span>
+            <span class="text-sm text-gray-400">@{{ post.author.username }}</span>
         </a>
+        {% else %}
+        <div class="flex items-center gap-1 mb-4">
+            <img class="w-8 h-8 rounded-full" src="{% static 'images/avatar_default.svg' %}"
+                alt="happy--v1" />
+            <span class="text-gray-500">no author</span>
+        </div>
+        {% endif %}
         <p class="text-5xl mb-10 px-4 font1">{{ post.body }}</p>
 
         <div class="flex items-center gap-2 text-sm mb-5">
@@ -39,8 +50,10 @@
                         alt="">1
                 </div>
                 <a href="">Like</a>
+                {% if user.is_authenticated and user == post.author %}
                 <a href="{% url 'post-edit' post.id %}">Edit</a>
                 <a href="{% url 'post-delete' post.id %}">Delete</a>
+                {% endif %}
             </div>
         </div>
     </div>

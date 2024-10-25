@@ -39,8 +39,8 @@ class="md:flex items-center justify-between [&>*]:px-8 bg-gray-800 h-20 text-whi
             <a class="cursor-pointer select-none" @click="dropdownOpen = !dropdownOpen"
                 @click.away="dropdownOpen = false">
                 <img class="h-8 w-8 rounded-full object-cover bg-teal-200"
-                    src="{{ user.profile.image.url }}" alt="{{ user.profile.realname }} avatar" />
-                {{ user.username }}
+                    src="{{ user.profile.avatar }}" alt="{{ user.profile.name }} avatar" />
+                {{ user.profile.name }}
                 <!-- Arrow rotation animation -->
                 <img x-bind:class="{'rotate-180 transition-transform duration-300': dropdownOpen, 'transition-transform duration-200': !dropdownOpen}"
                     class="w-4" src="https://img.icons8.com/metro/26/aaaaaa/expand-arrow.png"
