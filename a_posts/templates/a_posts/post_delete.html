@@ -15,7 +15,8 @@
         <form method='POST'>
             {% csrf_token %}
             <button type="submit">Confirm</button>
-            <a class="button secondaryAction ml-1" href="{{ request.META.HTTP_REFERER|default:"/" }}">Go Back</a>
+            {% comment %} <a class="button secondaryAction ml-1" href="{{ request.META.HTTP_REFERER|default:"/" }}">Go Back</a> {% endcomment %}
+            <a class="button secondaryAction ml-1" href="javascript:if(history.length > 1){history.back();} else {window.location.href='/';}">Go Back</a>
         </form>
     </div>
 </div>
