@@ -5,6 +5,7 @@ from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.urls import reverse
 
 
 from .forms import ProfileForm
@@ -41,7 +42,14 @@ def profile_edit_view(request):
     context = {
         'form': form    
     }
-    return render(request, 'a_users/profile_edit.html', context)
+
+    if request.path == reverse('profile-onboarding'):
+        template = 'onboarding'
+    else:
+        template = 'edit'
+    template = 'a_users/profile_' + template + '.html'
+    
+    return render(request, template, context)
 
 
 @login_required
