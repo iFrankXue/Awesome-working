@@ -146,7 +146,7 @@ def comment_delete(request, pk):
 
 
 
-def get_comments(request):
-    post_id = request.GET.get('post_id')
-    comments = Comment.objects.filter(parent_post_id=post_id).values('id', 'body')
-    return JsonResponse({'comments': list(comments)})
+# def get_comments(request):
+#     post_id = request.GET.get('post_id')
+#     comments = Comment.objects.filter(parent_post_id=post_id).values('id', 'body')
+#     return JsonResponse({'comments': list(comments)})
