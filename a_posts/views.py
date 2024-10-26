@@ -145,8 +145,3 @@ def comment_delete(request, pk):
     return render(request, 'a_posts/comment_delete.html', context)
 
 
-
-# def get_comments(request):
-#     post_id = request.GET.get('post_id')
-#     comments = Comment.objects.filter(parent_post_id=post_id).values('id', 'body')
-#     return JsonResponse({'comments': list(comments)})

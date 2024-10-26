@@ -15,9 +15,3 @@ urlpatterns = [
     
 ]
 
-
-
-# urlpatterns = [
-#     # Other URL patterns...
-#     path('admin/get-comments/', get_comments, name='get_comments'),
-# ]
