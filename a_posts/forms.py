@@ -51,4 +51,3 @@ class CommentCreateForm(forms.ModelForm):
         labels = {
             'body': ''
         }
-        

@@ -104,26 +104,32 @@ def post_page_view(request, pk):
     validate_uuid(pk)    
     post = get_object_or_404(Post, id=pk)
     
+    top_level_comments = post.comments.filter(parent_comment__isnull=True)
     comment_form = CommentCreateForm()
-
+    
     context = {
         'post': post,
         'comment_form': comment_form,
+        'top_level_comments': top_level_comments,
+        'show_replies': True,  # Add this here
     }
     
     return render(request, 'a_posts/post_page.html', context)
 
 
 @login_required
-def comment_sent(request, pk):
-    post = get_object_or_404(Post, id=pk)
+def comment_sent(request, pp_pk, cp_pk=None):
+    post = get_object_or_404(Post, id=pp_pk)
+    parent_comment = get_object_or_404(Comment, id=cp_pk) if cp_pk else None
     
     if request.method == 'POST':
         form = CommentCreateForm(request.POST)
+
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
             comment.parent_post = post
+            comment.parent_comment = parent_comment
             comment.save()
     
     return redirect('post-page', post.id)
@@ -133,14 +139,16 @@ def comment_sent(request, pk):
 def comment_delete(request, pk):
     validate_uuid(pk)
     comment = get_object_or_404(Comment, id=pk, author=request.user)
+    parent_post_id = comment.parent_post.id
     
     if request.method == 'POST':
         comment.delete()
         messages.success(request, 'Message deleted successfully!')
-        return redirect('post-page', comment.parent_post.id)
+        return redirect('post-page', parent_post_id)
     
     context = {
-        'comment': comment
+        'comment': comment,
+        'show_replies': False,
     }
     return render(request, 'a_posts/comment_delete.html', context)
 

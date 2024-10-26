@@ -3,6 +3,7 @@
         "allauth",
         "fireheart",
         "hoverlist",
+        "likedposts",
         "mobilenav",
         "navitems",
         "realname",
