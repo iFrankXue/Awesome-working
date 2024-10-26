@@ -33,3 +33,42 @@ class Tag(models.Model):
 
     class Meta:
         ordering = ['order']
+
+
+# class Comment(models.Model):
+#     # id = models.CharField(max_length=100, default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+#     id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+#     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='comments')
+#     parent_post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+#     body = models.CharField(max_length=150)
+#     created = models.DateTimeField(auto_now_add=True)
+    
+#     def __str__(self):
+#         try:
+#             return f'{self.author.username}: {self.body[:30]}'
+#         except:
+#             return f'no author: {self.body[:30]}'
+#     class Meta:
+#         ordering = ['-created']
+        
+        
+class Comment(models.Model):
+    # id = models.CharField(max_length=100, default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='comments')
+    parent_post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    
+    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')  # Self-referential field
+    
+    body = models.CharField(max_length=150)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        try:
+            return f'{self.author.username}: {self.body[:30]}'
+        except:
+            return f'no author: {self.body[:30]}'
+        
+    class Meta:
+        ordering = ['-created']
+        

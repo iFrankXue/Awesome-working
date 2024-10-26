@@ -17,7 +17,7 @@
 
     <button type="submit" >Submit</button>
 
-    <a class="button secondaryAction ml-1" href=" < class="button secondaryAction ml-1" href="javascript:if(history.length > 1){history.back();} else {window.location.href='/';}">Skip</a>
+    <a class="button secondaryAction ml-1" href=" < class="button secondaryAction ml-1" href="{{ request.META.HTTP_REFERER|default:"/" }}">Skip</a>
 </form>
 
 

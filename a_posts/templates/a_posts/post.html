@@ -42,8 +42,16 @@
         </div>
 
         <div class="flex items-center justify-between text-sm px-2">
-            <a class="font-bold hover:underline" href="{% url 'post-page' post.id %}">Comments<span
-                    class="font-light text-gray-500 ml-2">3</span></a>
+            <a class="font-bold hover:underline" href="{% url 'post-page' post.id %}">
+                {% if post.comments.count %}
+                Comments
+                <span class="font-light text-gray-500 ml-2">{{ post.comments.count }}</span>
+                {% else %}
+                {% if user.is_authenticated %}
+                Add Comments
+                {% endif %}
+                {% endif %}
+            </a>
             <div class="flex items-center gap-4 [&>a:hover]:underline">
                 <div class="flex items-center gap-1">
                     <img class="w-5 -mt-1" src="https://img.icons8.com/small/24/000000/fire-heart.png"

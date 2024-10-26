@@ -29,13 +29,11 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('', RedirectView.as_view(url='posts/', permanent=True)),
-    path('posts/', include('a_posts.urls')),
+    # path('', RedirectView.as_view(url='posts/', permanent=True)),
+    path('', include('a_posts.urls')),
+    path('profile/', include('a_users.urls')),
 ]   
 
-urlpatterns += [
-    path('profile/', include('a_users.urls')),
-]
 
 # Only for development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
