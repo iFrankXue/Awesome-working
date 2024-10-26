@@ -54,7 +54,7 @@ class Comment(models.Model):
     parent_post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')  # Self-referential field
-    
+    likes = models.ManyToManyField(User, related_name='likedcomments', through='LikedComment')
     body = models.CharField(max_length=150)
     created = models.DateTimeField(auto_now_add=True)
     
@@ -77,3 +77,11 @@ class Comment(models.Model):
             reply_count += reply.total_replies_count
         
         return reply_count
+
+class LikedComment(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'{self.user.username}: {self.comment.body[:30]}'

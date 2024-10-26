@@ -155,18 +155,37 @@ def comment_delete(request, pk):
     return render(request, 'a_posts/comment_delete.html', context)
 
 
-def like_post(request, pk):
-    post = get_object_or_404(Post, id=pk)
-    user_exist = post.likes.filter(username=request.user.username).exists()
-    
-    if post.author != request.user:
-        if user_exist:
-            post.likes.remove(request.user)
-        else:
-            post.likes.add(request.user)
-    
+
+def like_toggle(model): 
+    def inner_func(func):
+        def wrapper(request, *args, **kwargs):
+
+            instance = get_object_or_404(model, id=kwargs.get('pk'))
+            user_exist = instance.likes.filter(username=request.user.username).exists()
+            
+            if instance.author != request.user:
+                if user_exist:
+                    instance.likes.remove(request.user)
+                else:
+                    instance.likes.add(request.user)
+            
+            return func(request, instance)
+        return wrapper
+    return inner_func
+
+
+@login_required
+@like_toggle(Post)
+def post_like(request, instance):
     context = {
-        'post': post,
-    }    
-    
-    return render(request, 'snippets/likes.html', context)
+        'post': instance,
+    }   
+    return render(request, 'snippets/post_likes.html', context)
+
+@login_required
+@like_toggle(Comment)
+def comment_like(request, instance):
+    context = {
+        'comment': instance,
+    }
+    return render(request, 'snippets/comment_likes.html', context)
