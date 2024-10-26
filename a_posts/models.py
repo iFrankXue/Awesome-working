@@ -22,6 +22,16 @@ class Post(models.Model):
     class Meta:
         ordering = ['-created']
         
+        
+class LikedPost(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'{self.user.username}: {self.post.title}'
+
+
 class Tag(models.Model):
     order = models.IntegerField(null=True)
     name = models.CharField(max_length=20)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from bs4 import BeautifulSoup
 import requests
@@ -111,7 +111,9 @@ def post_page_view(request, pk):
         'post': post,
         'comment_form': comment_form,
         'top_level_comments': top_level_comments,
-        'show_replies': True,  # Add this here
+        
+        # Boolean value to determine whether show the replies in a single comment
+        'show_replies': True, 
     }
     
     return render(request, 'a_posts/post_page.html', context)
@@ -153,3 +155,18 @@ def comment_delete(request, pk):
     return render(request, 'a_posts/comment_delete.html', context)
 
 
+def like_post(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    user_exist = post.likes.filter(username=request.user.username).exists()
+    
+    if post.author != request.user:
+        if user_exist:
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+    
+    context = {
+        'post': post,
+    }    
+    
+    return render(request, 'snippets/likes.html', context)
