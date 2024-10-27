@@ -121,8 +121,11 @@ def post_page_view(request, pk):
 
 @login_required
 def comment_sent(request, pp_pk, cp_pk=None):
-    post = get_object_or_404(Post, id=pp_pk)
+    parent_post = get_object_or_404(Post, id=pp_pk)
     parent_comment = get_object_or_404(Comment, id=cp_pk) if cp_pk else None
+    comment = None
+    
+    comment_form = CommentCreateForm()
     
     if request.method == 'POST':
         form = CommentCreateForm(request.POST)
@@ -130,11 +133,18 @@ def comment_sent(request, pp_pk, cp_pk=None):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
-            comment.parent_post = post
+            comment.parent_post = parent_post
             comment.parent_comment = parent_comment
             comment.save()
-    
-    return redirect('post-page', post.id)
+
+    context = {
+        'comment': comment,
+        'post': parent_post,
+        'comment_form': comment_form,
+        'show_replies': True,
+    }
+
+    return render(request, 'a_posts/comment.html', context)
 
 
 @login_required

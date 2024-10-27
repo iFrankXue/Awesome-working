@@ -43,8 +43,7 @@
             {% include 'a_posts/comment_reply.html' with comment=comment %}
 
             <form method="POST" action={% url 'comment-sent-reply' post.id comment.id %} class="replyform flex justify-between" autocomplete="off">
-                    {% csrf_token %}
-                {% comment %} <input type="text" name="reply" placeholder="Add reply ..." maxlength="150"> {% endcomment %}
+                {% csrf_token %}
                 {{ comment_form.body }}
                 <button class="block" type="submit">Submit</button>
             </form>

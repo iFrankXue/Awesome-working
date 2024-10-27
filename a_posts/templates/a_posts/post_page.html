@@ -5,7 +5,10 @@
 {% include 'a_posts/post.html' %}
 
 <div class="card !pb-0 -mt-3">
-    <form method="POST" action={% url 'comment-sent-top' post.id %} class="flex items-center p-4" autocomplete="off">
+    <form class="flex items-center p-4" autocomplete="off"
+        hx-post="{% url 'comment-sent-top' post.id %}" 
+        hx-target="#tab-contents" 
+        hx-swap="afterbegin">
         {% csrf_token %}
         {% comment %} <input type="text" name="comment" placeholder="Add comment ...]]" maxlength="150"> {% endcomment %}
         {{ comment_form.body }}
