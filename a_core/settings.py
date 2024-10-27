@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     
+    # third-part
+    'django_htmx',
+    
     # Created applications
     'a_posts',
     'a_users',
@@ -64,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
     
     # Add the account middleware:
     "allauth.account.middleware.AccountMiddleware",    

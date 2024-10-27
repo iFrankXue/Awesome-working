@@ -25,22 +25,27 @@ x-transition:leave-start="opacity-100 mt-0" x-transition:leave-end="opacity-0 -m
         <h2 class="">Top Posts</h2>
     </div>
     <ul class="hoverlist">
-        <li><a href="">
-                <img class="w-10 h-10 rounded-lg object-cover mr-3"
-                    src="https://live.staticflickr.com/6064/6095504934_8e0591b235_k.jpg" alt="" />
-                <img class="w-6 h-6 rounded-full object-cover mr-0.5"
-                    src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="" />
-                <span class="font-bold text-sm mr-1">Homer</span>
-                <span class="text-sm font-light text-gray-500">(5 Likes)</span>
-            </a></li>
-        <li><a href="">
-                <img class="w-10 h-10 rounded-lg object-cover mr-3"
-                    src="https://live.staticflickr.com/6064/6095504934_8e0591b235_k.jpg" alt="" />
-                <img class="w-6 h-6 rounded-full object-cover mr-0.5"
-                    src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="" />
-                <span class="font-bold text-sm mr-1">Homer</span>
-                <span class="text-sm font-light text-gray-500">(5 Likes)</span>
-            </a></li>
+
+        {% for post in top_posts %}
+        <li><a href="{% url 'post-page' post.id %}" class="flex items-stretch justify-between">
+                <div class="flex items-center truncate">
+                    <img class="w-10 h-10 rounded-lg object-cover mr-3 shrink-0"
+                    src="{{ post.image }}" alt="" />
+
+                    {% if post.author %}
+                    <img class="w-6 h-6 rounded-full object-cover mr-1"
+                    src="{{ post.author.profile.avatar }}" alt="" />
+                    <span class="font-bold text-sm mr-1">{{ post.author.username }}</span>
+                    {% else %}
+                    <img class="w-6 h-6 rounded-full object-cover mr-1" src="{% static 'images/avatar_default.svg' %}" alt="" />
+                    <span class="font-bold text-sm mr-1">no author</span>
+                    {% endif %}
+
+                </div>   
+                <span class="{% if user in post.likes.all %}font-bold{% else %}font-light{% endif %} text-sm text-gray-500 shrink-0">{{ post.likes.count }} Like{{ post.likes.count|pluralize:'s' }} / {{ post.comments.count }}</span>
+            </a>
+        </li>
+        {% endfor %}
 
     </ul>
 </section>
@@ -51,18 +56,24 @@ x-transition:leave-start="opacity-100 mt-0" x-transition:leave-end="opacity-0 -m
         <h2 class="">Top Comments</h2>
     </div>
     <ul class="hoverlist">
-        <li><a href="">
-                <img class="w-8 h-8 rounded-full object-cover mr-1"
-                    src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="" />
-                <span class="font-bold text-sm mr-1">Homer</span>
-                <span class="text-sm font-light text-gray-500">(5 Likes)</span>
-            </a></li>
-        <li><a href="">
-                <img class="w-8 h-8 rounded-full object-cover mr-1"
-                    src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="" />
-                <span class="font-bold text-sm mr-1">Homer</span>
-                <span class="text-sm font-light text-gray-500">(5 Likes)</span>
-            </a></li>
+
+        {% for comment in top_comments %}
+        <li>
+            <a href="{% url 'post-page' comment.parent_post.id %}" class="flex items-stretch justify-between">
+                <div class="flex items-center truncate">
+                    {% if comment.author %}
+                    <img class="w-8 h-8 rounded-full object-cover mr-1"
+                        src="{{ comment.author.profile.avatar }}" alt="" />
+                    <span class="font-bold text-sm mr-1">{{ comment.author.profile.name }}: {{ comment.body|truncatechars:10 }}</span>
+                    {% else %}
+                    <img class="w-8 h-8 rounded-full object-cover mr-1" src="{% static 'images/avatar_default.svg' %}" alt="" />
+                    <span class="font-light text-sm mr-1">no author: {{ comment.body|truncatechars:10 }}</span>
+                    {% endif %}
+                </div>
+                <span class="text-sm {% if user in comment.likes.all %}font-bold{% else %}font-light{% endif %} text-gray-500 shrink-0">{{comment.likes.count}} Like{{ comment.likes.count|pluralize:'s' }} / {{ comment.replies.count }}</span>
+            </a>
+        </li>
+        {% endfor %}
 
     </ul>
 </section>
