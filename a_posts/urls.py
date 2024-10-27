@@ -19,5 +19,7 @@ urlpatterns = [
     path('reply/sent/<str:pk>/', reply_sent, name='reply-sent'),
     path('reply/delete/<str:pk>/', reply_delete, name='reply-delete'),
     path('reply/like/<str:pk>/', reply_like, name='reply-like'),
+    
+    path('profile_posts/<str:pk>/', profile_post, name='profile-post'),
 
 ]

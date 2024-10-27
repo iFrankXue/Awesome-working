@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Count
@@ -251,3 +251,14 @@ def reply_like(request, instance):
         'reply': instance,
     }
     return render(request, 'snippets/reply_likes.html', context)
+
+
+
+def profile_post(request, pk):
+    validate_uuid(pk)
+    posts = get_list_or_404(Post, author__id=pk)
+    
+    context = {
+        'posts': posts,
+    }
+    return render(request, 'snippets/loop_profile_posts.html', context)
