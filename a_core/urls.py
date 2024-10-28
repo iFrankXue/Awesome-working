@@ -20,20 +20,40 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
+from a_posts.views import *
+from a_users.views import *
 
 # from a_posts.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    
+    
+    path('', home_view, name='home'),
+    path('posts/create/', post_create_view, name='post-create'),
+    path('posts/delete/<str:pk>', post_delete_view, name='post-delete'),
+    path('posts/edit/<str:pk>/', post_edit_view, name='post-edit'),
+    path('posts/show/<str:pk>/', post_page_view, name='post-page'),
+    path('posts/like/<str:pk>/', post_like, name='post-like'),
+
+    path('category/<str:slug>/', home_view, name='category-view'),
+
+    path('comment/sent/<str:pk>/', comment_sent, name='comment-sent'),
+    path('comment/delete/<str:pk>/', comment_delete, name='comment-delete'),
+    path('comment/like/<str:pk>/', comment_like, name='comment-like'),
+
+    path('reply/sent/<str:pk>/', reply_sent, name='reply-sent'),
+    path('reply/delete/<str:pk>/', reply_delete, name='reply-delete'),
+    path('reply/like/<str:pk>/', reply_like, name='reply-like'),
+    
+    path('profile/', profile_view, name='profile-view'),
+    path('profile/edit/', profile_edit_view, name='profile-edit'),
+    path('profile/delete/', profile_delete_view, name='profile-delete'),
+    path('profile/view/<str:username>/', profile_view, name='user-profile'),
+    path('profile/onboarding/', profile_edit_view, name='profile-onboarding'),
+    
 ]
-
-urlpatterns += [
-    # path('', RedirectView.as_view(url='posts/', permanent=True)),
-    path('', include('a_posts.urls')),
-    path('profile/', include('a_users.urls')),
-]   
-
 
 # Only for development
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

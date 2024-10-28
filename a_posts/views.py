@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.contrib import messages
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
@@ -12,18 +13,32 @@ from .forms import PostCreateForm, PostEditForm, CommentCreateForm, ReplyCreateF
 from .utils import validate_uuid
 # Create your views here.
 
-def home_view(request, tag=None):
-    if tag:
-        posts = Post.objects.filter(tags__slug=tag)
-        tag = get_object_or_404(Tag, slug=tag)
+def home_view(request, slug=None):
+    if slug:
+        posts = Post.objects.filter(tags__slug=slug)
+        tag = get_object_or_404(Tag, slug=slug)
     else:
         posts = Post.objects.all()
+        tag = None
+    
+    paginator = Paginator(posts, 3)
+    page = int(request.GET.get('page', 1))
+    
+    try:
+        posts = paginator.page(page)
+    except:
+        return HttpResponse('')
     
     context = {
         'posts': posts,
+        'page': page,
         'tag': tag,
     }
-    return render(request, 'a_posts/home.html', context)
+    
+    if request.htmx:
+        return render(request, 'snippets/loop_home_posts.html', context)
+    else:
+        return render(request, 'a_posts/home.html', context)
 
 
 @login_required
@@ -251,14 +266,3 @@ def reply_like(request, instance):
         'reply': instance,
     }
     return render(request, 'snippets/reply_likes.html', context)
-
-
-
-def profile_post(request, pk):
-    validate_uuid(pk)
-    posts = get_list_or_404(Post, author__id=pk)
-    
-    context = {
-        'posts': posts,
-    }
-    return render(request, 'snippets/loop_profile_posts.html', context)

@@ -55,7 +55,7 @@ class="md:flex items-center justify-between [&>*]:px-8 bg-gray-800 h-20 text-whi
                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                 x-transition:leave-end="opacity-0 -translate-y-5 scale-90">
                 <ul class="hoverlist [&>li>a]:justify-end">
-                    <li><a href="{% url 'profile' %}">My Profile</a></li>
+                    <li><a href="{% url 'profile-view' %}">My Profile</a></li>
                     <li><a href="{% url 'profile-edit' %}">Edit Profile</a></li>
                     <li><a href="{% url 'account_logout' %}">Log Out</a></li>
                 </ul>

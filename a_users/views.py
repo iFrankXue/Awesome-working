@@ -6,7 +6,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.urls import reverse
+from django.db.models import Count
 
+from a_posts.models import Post
+from a_posts.forms import ReplyCreateForm
 
 from .forms import ProfileForm
 
@@ -20,8 +23,26 @@ def profile_view(request, username=None):
         except:
             raise Http404
 
+    # Get posts for the profile
+    posts = profile.user.posts.all()
+
+    # Handling HTMX-specific requests
+    if request.htmx:
+        if 'top_posts' in request.GET:
+            posts = profile.user.posts.annotate(top_points=Count('likes')).filter(top_points__gt=0).order_by('-top_points')
+        elif 'top_comments' in request.GET:
+            comments = profile.user.comments.annotate(top_points=Count('likes')).filter(top_points__gt=0).order_by('-top_points')
+            reply_form = ReplyCreateForm()
+            return render(request, 'snippets/loop_profile_comments.html', {'comments': comments, 'reply_form': reply_form}) 
+        elif 'liked_posts' in request.GET:
+            posts = profile.user.likedposts.order_by('-likedpost__created')
+        
+        return render(request, 'snippets/loop_profile_posts.html', {'posts': posts,}) 
+
+
     context = {
-        'profile': profile
+        'profile': profile,
+        'posts': posts,
     }
     return render(request, 'a_users/profile.html', context)
 
@@ -33,7 +54,7 @@ def profile_edit_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully!')
-            return redirect('profile')
+            return redirect('profile-view')
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
