@@ -19,7 +19,7 @@ def home_view(request, slug=None):
         tag = get_object_or_404(Tag, slug=slug)
     else:
         posts = Post.objects.all()
-        tag = None
+        tag = None 
     
     paginator = Paginator(posts, 3)
     page = int(request.GET.get('page', 1))

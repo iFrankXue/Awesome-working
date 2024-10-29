@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # Created applications
     'a_posts',
     'a_users',
+    'a_inbox',
     
     'django_cleanup.apps.CleanupConfig',
     
@@ -166,4 +167,35 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 
-ACCOUNT_USERNAME_BlACKLIST = ['admin', 'accounts', 'profile', 'category', 'post', 'delete', 'edit']
+# ACCOUNT_USERNAME_BlACKLIST = ['admin', 'accounts', 'profile', 'category', 'post', 'delete', 'edit', 'inbox']
+
+ACCOUNT_USERNAME_BLACKLIST = [
+    # System and admin terms
+    'admin', 'administrator', 'root', 'sysadmin', 'system', 'operator', 
+    'support', 'service', 'helpdesk', 'help', 'info', 'contact', 'security', 
+    'moderator', 'mod', 'staff', 'user', 'guest', 'superuser',
+
+    # Generic names and placeholder terms
+    'test', 'null', 'undefined', 'anonymous', 'unknown', 'public', 'official', 
+    'nobody', 'somebody', 'anybody', 'someone',
+
+    # Positions and roles
+    'manager', 'director', 'developer', 'engineer', 'ceo', 'founder', 'cofounder', 
+    'adminuser', 'supervisor', 'operator', 'moderator', 'supportstaff',
+
+    # Brand and project-related terms (replace 'yourbrand' with your brand name)
+    'yourbrand', 'yourbrandadmin', 'yourbrandteam', 'official', 'yourbrandofficial',
+    
+    # Offensive and inappropriate terms (keep a separate list if possible)
+    'badword1', 'badword2',  # Add specific terms to avoid in your app
+
+    # Social media or internet handles
+    'facebook', 'twitter', 'instagram', 'linkedin', 'snapchat', 'youtube', 'reddit',
+
+    # Reserved terms for specific purposes (if applicable)
+    'mail', 'email', 'account', 'profile', 'settings', 'config', 'privacy', 
+    'login', 'logout', 'signin', 'signup', 'register'
+    
+    # Reserved terms for this project
+    'inbox',
+]

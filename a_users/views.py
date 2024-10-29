@@ -12,6 +12,7 @@ from a_posts.models import Post
 from a_posts.forms import ReplyCreateForm
 
 from .forms import ProfileForm
+from a_inbox.forms import InboxNewMessageForm
 
 # Create your views here.
 def profile_view(request, username=None):
@@ -39,10 +40,12 @@ def profile_view(request, username=None):
         
         return render(request, 'snippets/loop_profile_posts.html', {'posts': posts,}) 
 
-
+    new_message_form = InboxNewMessageForm()
+    
     context = {
         'profile': profile,
         'posts': posts,
+        'new_message_form': new_message_form
     }
     return render(request, 'a_users/profile.html', context)
 
