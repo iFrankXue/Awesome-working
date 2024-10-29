@@ -53,6 +53,8 @@ urlpatterns = [
     path('profile/view/<str:username>/', profile_view, name='user-profile'),
     path('profile/onboarding/', profile_edit_view, name='profile-onboarding'),
     
+    path('inbox/', include('a_inbox.urls')),
+    
 ]
 
 # Only for development
