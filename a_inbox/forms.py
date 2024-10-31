@@ -10,7 +10,7 @@ class InboxNewMessageForm(forms.ModelForm):
         }
         widgets = {
             'body': forms.Textarea(attrs={
-                'rows': 4,
+                'rows': 2,
                 'placeholder': 'Add message ...',
             }),
         }
