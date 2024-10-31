@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.timesince import timesince
+from cryptography.fernet import Fernet
+from django.conf import settings
 import uuid
 
 from a_users.models import *
@@ -13,6 +15,13 @@ class InboxMessage(models.Model):
     conversation = models.ForeignKey('Conversation', on_delete=models.CASCADE, related_name='messages')
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    
+    @property
+    def body_decrypted(self):
+        f = Fernet(settings.ENCRYPT_KEY)
+        message_decrypted = f.decrypt(self.body)
+        message_decode = message_decrypted.decode('utf-8')
+        return message_decode
     
     class Meta:
         ordering = ['-created']
